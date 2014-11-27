@@ -1,0 +1,34 @@
+<h2>Leistungserbringer</h2>
+<div ng-controller="SuppliersCtrl">
+
+	<form id="list">
+		<fieldset>
+    		<legend>Leistungserbringer Übersicht</legend>
+	        <table id="table" class="table table-striped">
+	            <thead>
+		            <tr>
+		                <th>Titel</th>
+		                <th>Date</th>
+		                <th>Author</th>
+		                <th>Camera</th>
+		                <th>Id</th>
+		                <th></th>
+		            </tr>
+	            </thead>
+	            <tbody>
+		            <tr ng-repeat="supplier in suppliers">
+		                <td>{{supplier.employeeid}}</td>
+		                <td>{{supplier.date | date:'dd.MM.yyyy'}}</td>
+		                <td>{{supplier.firstName}} {{testReport.author.lastName}}</td>
+		                <td>{{supplier.role}}</td>
+		                <td>{{supplier.id}}</td>
+		                <td style="text-align: right;">
+		                	<button id="edit" ng-click="edit(supplier)" class="btn">Edit</button>
+							<button id="remove" ng-click="remove($index, supplier.id)" class="btn">Delete</button>
+						</td>
+		            </tr>
+	            </tbody>
+	        </table>
+		</fieldset>
+    </form>
+</div>
