@@ -1,32 +1,44 @@
 <h2>Behandlungsfälle</h2>
 <div ng-controller="CasesCtrl">
-	<div class="well" ng-repeat="case in cases">
-		<div ng-controller="CasesCtrl">
-			<fieldset>
-	    		<legend>FID {{case.fid}}</legend>
-		        <table id="table" class="table table-striped">
-		            <thead>
-			            <tr>
-			                <th>Title</th>
-			                <th>Author</th>
-			                <th>Date</th>
-			                <th>ID</th>
-			                <th></th>
-			            </tr>
-		            </thead>
-		            <tbody>
-			            <tr ng-repeat="activity in activities">
-			                <td>{{activity.treatmentNumber}}</td>
-			                <td>{{activity.author.forename}} {{comment.author.surname}}</td>
-			                <td>{{activity.date | date:'dd.MM.yyyy'}}</td>
-			                <td>{{activity.id}}</td>
-			                <td style="text-align: right;">		                
-                                            <button id="remove" ng-click="remove($index, activity.id)" class="btn">Delete</button>
-                                        </td>
-			            </tr>
-		            </tbody>
-		        </table>
-			</fieldset>
-		</div>
-	</div>
+    <div class="well" >
+        <div ng-controller="CasesCtrl">
+            <fieldset>
+                <table id="table" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Fid</th>
+                            <th>Pid</th>
+                            <th>Eintritt</th>
+                            <th>Patient</th>
+                            <th>Geburtsdatum</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr ng-repeat="case in cases">
+                            <td>{{case.treatmentNumber}}</td>
+                            <td>{{case.patient.patientNumber}} {{comment.author.surname}}</td>
+                            <td>{{case.patient.startTime| date:'dd.MM.yyyy'}}</td>
+                            <td>{{case.patient.lastName}}, {{case.patient.firstName}} </td>
+                            <td>{{case.patient.dateOfBirth| date:'dd.MM.yyyy'}}</td>
+                            <td style="text-align: right;">		                
+                                <button id="approve" ng-click="goTo($index, activity.id)" class="btn">Freigabe starten</button>
+                            </td>
+                        </tr>
+
+                        <!-- <tr ng-repeat="activity in activities">
+                             <td>{{activity.treatmentNumber}}</td>
+                             <td>{{activity.author.forename}} {{comment.author.surname}}</td>
+                             <td>{{activity.date | date:'dd.MM.yyyy'}}</td>
+                             <td>{{activity.id}}</td>
+                             <td style="text-align: right;">		                
+                                 <button id="remove" ng-click="remove($index, activity.id)" class="btn">Delete</button>
+                             </td>
+                         </tr>-->
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
 </div>

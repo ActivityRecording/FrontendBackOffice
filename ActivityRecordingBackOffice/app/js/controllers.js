@@ -9,7 +9,7 @@ function MenuCtrl($scope, $route, $routeParams, $location) {
 	$scope.$routeParams = $routeParams;
 };
 
-function TestReportCtrl($scope, TestReport, Author, Camera) {
+function TestReportCtrl($scope, $location, TestReport, Author, Camera) {
 	
     $scope.currentTestReport = new TestReport();
     $scope.testReports = TestReport.query();
@@ -43,9 +43,14 @@ function TestReportCtrl($scope, TestReport, Author, Camera) {
 		$scope.testReports.splice(index, 1);
 		TestReport.remove({'id':id});
     };
+    
+    $scope.goTo = function(){
+      $location.path( '/view.approval' );  
+    };
+    
 };
 
-function CasesCtrl($scope, TreatmentCase) {
+function CasesCtrl($scope, $location, TreatmentCase) {
 	
     $scope.currentCase = new TreatmentCase();
     $scope.cases = TreatmentCase.query();
@@ -76,9 +81,14 @@ function CasesCtrl($scope, TreatmentCase) {
 		$scope.cases.splice(index, 1);
 		TreatmentCase.remove({'id':id});
     };
+    
+    $scope.goTo = function(){
+      $location.path('/view.approval');  
+    };
+    
 };
 
-function ApprovalCtrl($scope, TreatmentCase) {
+function ApprovalCtrl($scope, $location, TreatmentCase) {
 	
     $scope.currentCase = new TreatmentCase();
     $scope.cases = TreatmentCase.query();
@@ -107,10 +117,20 @@ function ApprovalCtrl($scope, TreatmentCase) {
     	$scope.cases.splice(index, 1);
 		$scope.cases.splice(index, 1);
 		TreatmentCase.remove({'id':id});
-    };   
+    };
+    
+    $scope.back = function(){
+      $location.path( '/view.approval' );  
+    };
+    
+    $scope.approve = function(){
+      $location.path( '/view.approval' );  
+    };
+
+    
 };
 
-function ActivitiesCtrl($scope, Activity) {
+function ActivitiesCtrl($scope, $location, Activity) {
 	
     $scope.currentActivity = new Activity();
     $scope.activities = Activity.query();
@@ -140,6 +160,13 @@ function ActivitiesCtrl($scope, Activity) {
 		$scope.activities.splice(index, 1);
 		Activity.remove({'id':id});
     };   
+    
+    $scope.back = function(){
+      $location.path( '/view.cases' );  
+    };
+    $scope.next = function(){
+      $location.path( '/view.approval' );  
+    };
 };
 
 function SuppliersCtrl($scope, Author) {
