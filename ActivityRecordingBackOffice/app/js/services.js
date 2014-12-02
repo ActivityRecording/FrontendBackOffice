@@ -37,9 +37,9 @@ services.factory('Patient', function($resource, url ) {
 });
 
 /*
- * Der Rest-Service TimePeriode gibt alle Zeitraeme zurueck
+ * Der Rest-Service TimePeriod gibt alle Zeitraeme zurueck
  */
-services.factory('TimePeriode', function($resource, url ) {
+services.factory('TimePeriod', function($resource, url ) {
     return $resource(url + 'timePeriods/treatment/:fid', {fid: '@fid'}, {
         'update': {method: 'PUT'}
     });

@@ -82,16 +82,18 @@ function CasesCtrl($scope, $location, TreatmentCase) {
 		TreatmentCase.remove({'id':id});
     };
     
-    $scope.goTo = function(){
-      $location.path('/view.approval');  
+    $scope.goTo = function(fid){
+      $location.path('/view.activities/'+fid);  
     };
     
 };
 
-function ApprovalCtrl($scope, $location, TreatmentCase) {
-	
+function ApprovalCtrl($scope, $routeParams, $location, TreatmentCase) {
+
+    $scope.fid = $routeParams.fid;
     $scope.currentCase = new TreatmentCase();
     $scope.cases = TreatmentCase.query();
+
     
     $scope.cancel = function () {
         $scope.currentCase = new TreatmentCase();
@@ -120,20 +122,24 @@ function ApprovalCtrl($scope, $location, TreatmentCase) {
     };
     
     $scope.back = function(){
-      $location.path( '/view.approval' );  
+      $location.path( '/view.activities/'+$scope.fid);  
     };
     
     $scope.approve = function(){
-      $location.path( '/view.approval' );  
+      $location.path( '/view.cases' );  
     };
 
     
 };
 
-function ActivitiesCtrl($scope, $location, Activity) {
-	
+function ActivitiesCtrl($scope, $routeParams, $location, Activity, TimePeriod) {
+
+    $scope.fid = $routeParams.fid;
     $scope.currentActivity = new Activity();
-    $scope.activities = Activity.query();
+    $scope.activities = Activity.query({fid: $scope.fid});
+    
+    $scope.currentTimePeriode = new TimePeriod();
+    $scope.periods = TimePeriod.query({fid: $scope.fid});
     
     $scope.cancel = function () {
         $scope.currentActivity = new Activity();
@@ -162,10 +168,10 @@ function ActivitiesCtrl($scope, $location, Activity) {
     };   
     
     $scope.back = function(){
-      $location.path( '/view.cases' );  
+      $location.path( '/view.cases/');  
     };
     $scope.next = function(){
-      $location.path( '/view.approval' );  
+      $location.path( '/view.approval/'+$scope.fid );  
     };
 };
 

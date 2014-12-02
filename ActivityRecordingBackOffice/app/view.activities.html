@@ -1,59 +1,72 @@
 <h2>Leistungsübersicht</h2>
 <div ng-controller="ActivitiesCtrl">
-    <form id="list">
-	<fieldset>
-            <legend>Leistungsübersicht</legend>
-		<table id="table" class="table table-striped">
-                    <thead>
-			<tr>
-                            <th>Forename</th>
-                            <th>Surname</th>
-                            <th>Id</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-			<!--<tr ng-repeat="author in authors">
-                            <td>{{author.forename}}</td>
-                            <td>{{author.surname}}</td>
-                            <td>{{author.id}}</td>
-                            <td style="text-align: right;">
-				<button id="edit" ng-click="edit(author)" class="btn">Edit</button>
-				<button id="remove" ng-click="remove($index, author.id)"
-					class="btn">Delete</button>
-                            </td>
-			</tr>-->
-                    </tbody>
-		</table>
-        </fieldset>
-    </form>
 
-	<form id="form" name="activityForm">
-		<fieldset>
-			<legend>Leistung anlegen</legend>
-
-			<div class="control-group">
-				<label for="forename">Forename</label>
-				<input type="text" id="forename" ng-model="currentActivity.forename" ng-minlength="2" ng-minlength="255" required />
-			</div>
-			<div class="control-group">
-				<label for="surname">Surname</label>
-				<input type="text" id="surname"	ng-model="currentActivity.surname" ng-minlength="2" ng-minlength="255" required />
-			</div>
-			<div class="control-group">
-				<label for="id">Id</label>
-				<input type="text" id="id" ng-model="currentActivity.id"  disabled="disabled"/>
-			</div>
-			<div class="control-group">
-				<label>&nbsp;</label>
-				<button id="save" ng-click="save()" class="btn">Save</button>
-				<button id="cancel" ng-click="cancel()" class="btn">Cancel</button>
-			</div>
-		</fieldset>
-		<div class=" clearfix"></div>
-	</form>
-    <div>
-        <button id="back" ng-click="back()" class="btn">Back</button>
-	<button id="next" ng-click="next()" class="btn">Next</button>
+    <h4>Hinterlegte Leistungenen [FID {{fid}}]</h4>
+    <div class="well" ng-repeat="activity in activities">
+         <fieldset>
+        <h5>{{activity.tarmedActivityId}} {{activity.description}}</h5>
+        <ul>
+            <li>Leistungserbringer: {{activity.employeeId}}</li>
+            <li>Dauer: {{activity.duration}}</li>
+        </ul>
+        <p>{{activity.text}}</p>
+         </fieldset>
     </div>
+
+
+    
+    
+        <h4>Zeiten bearbeitn</h4>
+        <div class="well" >
+            <form id="form{{case.id}}" name="casesForm">
+                <fieldset>
+                    <div class="control-group">
+                        <label for="title{{case.id}}">Title</label>
+                        <input type="text" id="title{{case.id}}" ng-model="currentCase.title" ng-minlength="2" ng-minlength="255" required />
+                    </div>
+                    <div class="control-group">
+                        <label for="date{{case.id}}">Date</label>
+                        <input type="text" id="date{{case.id}}" ng-model="currentCase.date" date="dd.MM.yyyy" ui-date="{ dateFormat: 'dd.mm.yy' }" required />
+                    </div>
+                    <div class="control-group">
+                        <label for="author{{case.id}}">Author</label>
+                        <select id="author{{case.id}}" ng-model="currentCase.author" ng-options="(author.forename + ' ' + author.surname) for author in authors">
+                            <option value="">-- Select a Author --</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="text{{case.id}}">Text</label>
+                        <textarea id="text{{case.id}}" ng-model="currentCase.text" rows="5" required></textarea>
+                    </div>
+                    <div class="control-group">
+                        <label for="id{{case.id}}">Id</label>
+                        <input type="text" id="id{{case.id}}" ng-model="currentCase.id" disabled="disabled"/>
+                    </div>
+                    <div class="control-group">
+                        <label>&nbsp;</label>		        
+                        <button id="save" ng-click="save()" class="btn">Save</button>
+                        <button id="cancel" ng-click="cancel()" class="btn">Cancel</button>
+                    </div>				    
+                </fieldset>
+
+                <div class="clearfix"></div>
+            </form>
+        </div>
+        
+    <h4>Hinterlegte Zeitmessungen [FID {{fid}}]</h4>
+    <div class="well" ng-repeat="period in periods">
+         <fieldset>
+        <h5>{{period.startTime}} {{period.endTime}}</h5>
+        <ul>
+            <li>Leistungserbringer: {{period.employeeId}}</li>
+        </ul>
+        </fieldset>
+    </div>
+        
+        
+    </div>
+
+<div>
+    <button id="save" ng-click="back()" class="btn">Zurück</button>
+    <button id="next" ng-click="next()" class="btn">Weiter</button>
 </div>

@@ -23,7 +23,7 @@
                             <td>{{case.patient.lastName}}, {{case.patient.firstName}} </td>
                             <td>{{case.patient.dateOfBirth| date:'dd.MM.yyyy'}}</td>
                             <td style="text-align: right;">		                
-                                <button id="approve" ng-click="goTo($index, activity.id)" class="btn">Freigabe starten</button>
+                                <button id="approve" ng-click="goTo(case.treatmentNumber)" class="btn">Freigabe starten</button>
                             </td>
                         </tr>
 

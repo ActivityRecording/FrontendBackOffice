@@ -4,12 +4,12 @@ var ActivityRecordingBackOffice = angular.module('ActivityRecordingBackOffice', 
 
 ActivityRecordingBackOffice.config(function($routeProvider) {
 		
-		$routeProvider.when('/view.activities', {
-			templateUrl : 'view.activites.html',
+		$routeProvider.when('/view.activities/:fid', {
+			templateUrl : 'view.activities.html',
 			controller : ActivitiesCtrl  
 		});
                 
-		$routeProvider.when('/view.approval', {
+		$routeProvider.when('/view.approval/:fid', {
 			templateUrl : 'view.approval.html',
 			controller : ApprovalCtrl
 		});
