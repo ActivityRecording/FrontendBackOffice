@@ -1,7 +1,7 @@
-<h2>Freigabe von Behandlungsfällen</h2>
+<h2>Freigabe des Behandlungsfalls [{{fid}}]</h2>
 <div ng-controller="ApprovalCtrl">
     <!-- Leistungstabelle -->
-    <h4>Übersicht Leistungen {{fid}}]</h4>
+    <h4>Übersicht Leistungen</h4>
     <fieldset>
         <table id="tbl_Activities" class="table table-striped">
             <thead>
@@ -10,7 +10,6 @@
                     <th>Beschreibung</th>
                     <th>Leistungserbringer</th>
                     <th>Dauer</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -19,10 +18,6 @@
                     <td>{{activity.description}}</td>
                     <td>{{activity.employeeId}}</td>
                     <td>{{activity.duration}}</td>
-                    <td style="text-align: right;">
-                        <button id="save" ng-click="editActivity(activity)" class="btn">Bearbeiten</button>
-                        <button id="remove" ng-click="remove($index, activity.activityId)" class="btn">Löschen</button>
-                    </td>
                 </tr>
             </tbody>
         </table>
@@ -37,7 +32,6 @@
                     <th>Von</th>
                     <th>Bis</th>
                     <th>Dauer</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -46,10 +40,6 @@
                     <td>{{period.startTime}}</td>
                     <td>{{period.endTime}}</td>
                     <td>ToDo</td>
-                    <td style="text-align: right;">
-                        <button id="save" ng-click="editPeriod(period)" class="btn">Bearbeiten</button>
-                        <button id="remove" ng-click="remove($index, period.timePeriodId)" class="btn">Löschen</button>
-                    </td>
                 </tr>
             </tbody>
         </table>

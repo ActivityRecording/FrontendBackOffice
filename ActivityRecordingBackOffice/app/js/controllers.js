@@ -146,8 +146,11 @@ function ActivitiesCtrl($scope, $routeParams, $location, Activity, TimePeriod, S
     $scope.currentActivity = new Activity();
     $scope.activities = Activity.query({fid: $scope.fid});
 
-    $scope.currentTimePeriod = new TimePeriod();
+//    $scope.currentTimePeriod = new TimePeriod();
     $scope.periods = TimePeriod.query({fid: $scope.fid});
+    
+    $scope.currentSupplier = new Supplier();
+    $scope.suppliers = Supplier.query();
 
     $scope.cancel = function () {
         $scope.currentActivity = new Activity();
@@ -159,8 +162,8 @@ function ActivitiesCtrl($scope, $routeParams, $location, Activity, TimePeriod, S
             if (!$scope.activitiesForm.$invalid) {
                 var isNew = $scope.currentActivity.activityId == null;
                 if (isNew) {
-//                    $scope.currentActivity = Activity.$save($scope.currentActivity);
-                    $scope.currentActivity.$save();
+                    $scope.currentActivity.treatmentNumber = $scope.fid;
+                    $scope.currentActivity.$save({fid: $scope.fid});
                     $scope.activities.push($scope.currentActivity);
                 } else {
                     $scope.currentActivity = Activity.update($scope.currentActivity);
@@ -174,8 +177,8 @@ function ActivitiesCtrl($scope, $routeParams, $location, Activity, TimePeriod, S
             if (!$scope.timePeriodForm.$invalid) {
                 var isNew = $scope.currentTimePeriod.timePeriodId == null;
                 if (isNew) {
-//                    $scope.currentTimePeriod = TimePeriod.$save($scope.currentTimePeriod);
-                    $scope.currentTimePeriod.$save();
+                    $scope.currentTimePeriod.currentActivity.treatmentNumber = $scope.fid;
+                    $scope.currentTimePeriod.$save({fid: $scope.fid});
                     $scope.periods.push($scope.currentTimePeriod);
                 } else {
                     $scope.currentTimePeriod = TimePeriod.update($scope.currentTimePeriod);
@@ -220,37 +223,37 @@ function ActivitiesCtrl($scope, $routeParams, $location, Activity, TimePeriod, S
 }
 ;
 
-function SuppliersCtrl($scope, Author) {
+function SuppliersCtrl($scope, Supplier) {
 
-    $scope.currentAuthor = new Author();
-    $scope.authors = Author.query();
+    $scope.currentSupplier = new Supplier();
+    $scope.suppliers = Supplier.query();
 
     $scope.cancel = function () {
-        $scope.currentAuthor = new Author();
+        $scope.currentSupplier = new Supplier();
     };
 
     $scope.save = function () {
-        if (!$scope.authorForm.$invalid) {
-            var isNew = $scope.currentAuthor.id == null;
+        if (!$scope.suppliersForm.$invalid) {
+            var isNew = $scope.currentSupplier.id == null;
             if (isNew) {
-                $scope.currentAuthor = Author.save($scope.currentAuthor);
-                $scope.authors.push($scope.currentAuthor);
+                $scope.currentSupplier = Supplier.save($scope.currentSupplier);
+                $scope.suppliers.push($scope.currentSupplier);
 
             } else {
-                $scope.currentAuthor = Author.update($scope.currentAuthor);
+                $scope.currentSupplier = Supplier.$update($scope.currentSupplier);
             }
             $scope.cancel();
-            $scope.authorForm.$setPristine();
+            $scope.suppliersForm.$setPristine();
         }
     };
 
-    $scope.edit = function (author) {
-        $scope.currentAuthor = author;
+    $scope.edit = function (supplier) {
+        $scope.currentSupplier = supplier;
     };
 
     $scope.remove = function (index, id) {
-        $scope.authors.splice(index, 1);
-        Author.remove({'id': id});
+        $scope.suppliers.splice(index, 1);
+        Supplier.$remove({'id': id});
     };
 }
 ;

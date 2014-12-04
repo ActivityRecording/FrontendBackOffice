@@ -1,4 +1,4 @@
-<h2>Leistungsübersicht</h2>
+<h2>Leistungsübersicht des Behandlungsfalls [{{fid}}]</h2>
 <div ng-controller="ActivitiesCtrl">
 
     <!-- Leistungsbearbeitung -->
@@ -12,11 +12,11 @@
                 </div>
                 <div class="control-group">
                     <label for="description">Beschreibung</label>
-                    <input type="text" id="description" ng-model="currentActivity.description" date="dd.MM.yyyy" ui-date="{ dateFormat: 'dd.mm.yy' }" required />
+                    <input type="text" id="description" ng-model="currentActivity.description" required />
                 </div>
                 <div class="control-group">
                     <label for="supplier">Leistungserbringer</label>
-                    <select id="supplier" ng-model="currentActivity.employeeId" ng-options="(supplier.firstName + ' ' + supplier.lastName) for supplier in suppliers">
+                    <select id="supplier" ng-model="currentActivity.supplier" ng-options="(supplier.lastname + ' ' + supplier.firstname) for supplier in suppliers">
                         <option value="">-- Leistungserbringer auswählen --</option>
                     </select>
                 </div>
@@ -41,7 +41,7 @@
 
 
     <!-- Leistungstabelle -->
-    <h4>Hinterlegte Leistungenen [FID: {{fid}}]</h4>
+    <h4>Hinterlegte Leistungenen</h4>
     <fieldset>
         <table id="tbl_Activities" class="table table-striped">
             <thead>
@@ -75,8 +75,9 @@
             <fieldset>
                 <div class="control-group">
                     <label for="supplier">LE-ID</label>
-                    <select id="supplier" ng-model="currentTimePeriod.employeeId" ng-options="(supplier.firstName + ' ' + supplier.lastName) for supplier in suppliers">
-                        <option value="">-- Select a Author --</option>
+                    <select id="supplier" ng-model="currentTimePeriod.supplier.employeeID" 
+                                          ng-options="(supplier.firstname + ' ' + supplier.lastname) for supplier in suppliers">
+                        <option value="">-- Leistungserbringer auswählen --</option>
                     </select>
                 </div>
                 <div class="control-group">
@@ -95,6 +96,17 @@
                     <label for="id">Id</label>
                     <input type="text" id="id" ng-model="currentTimePeriod.timePeriodId" disabled="disabled"/>
                 </div>
+                <!--
+                <div class="dropdown">
+                    <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
+                     <div class="input-group"><input type="text" class="form-control" data-ng-model="data.dateDropDownInput"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                     </div>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <datetimepicker data-ng-model="data.dateDropDownInput" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+                    </ul>
+                </div>
+                -->
                 <div class="control-group">
                     <label>&nbsp;</label>		        
                     <button id="save" ng-click="save(1)" class="btn">Sichern</button>

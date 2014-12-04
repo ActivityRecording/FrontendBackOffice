@@ -1,34 +1,68 @@
 <h2>Leistungserbringer</h2>
 <div ng-controller="SuppliersCtrl">
 
-	<form id="list">
-		<fieldset>
-    		<legend>Leistungserbringer Übersicht</legend>
-	        <table id="table" class="table table-striped">
-	            <thead>
-		            <tr>
-		                <th>Titel</th>
-		                <th>Date</th>
-		                <th>Author</th>
-		                <th>Camera</th>
-		                <th>Id</th>
-		                <th></th>
-		            </tr>
-	            </thead>
-	            <tbody>
-		            <tr ng-repeat="supplier in suppliers">
-		                <td>{{supplier.employeeid}}</td>
-		                <td>{{supplier.date | date:'dd.MM.yyyy'}}</td>
-		                <td>{{supplier.firstName}} {{testReport.author.lastName}}</td>
-		                <td>{{supplier.role}}</td>
-		                <td>{{supplier.id}}</td>
-		                <td style="text-align: right;">
-		                	<button id="edit" ng-click="edit(supplier)" class="btn">Edit</button>
-							<button id="remove" ng-click="remove($index, supplier.id)" class="btn">Delete</button>
-						</td>
-		            </tr>
-	            </tbody>
-	        </table>
-		</fieldset>
+    <!-- Leistungserbringer Bearbeitung -->
+    <h4>Leistungen bearbeiten</h4>
+    <div class="well">
+        <form id="form" name="suppliersForm">
+            <fieldset>
+                <div class="control-group">
+                    <label for="employeeID">Tarmed-ID</label>
+                    <input type="text" id="employeeID" ng-model="currentSupplier.employeeID" ng-minlength="2" ng-minlength="255" />
+                </div>
+                <div class="control-group">
+                    <label for="lastname">Name</label>
+                    <input type="text" id="lastname" ng-model="currentSupplier.lastname"/>
+                </div>
+                <div class="control-group">
+                    <label for="fistname">Vorname</label>
+                    <input type="text" id="fistname" ng-model="currentSupplier.firstname"/>
+                </div>
+                <div class="control-group">
+                    <label for="type">Rolle</label>
+                    <input type="text" id="type" ng-model="currentSupplier.role.type"  disabled="disabled"/>
+                </div>
+                <div class="control-group">
+                    <label for="description">Id</label>
+                    <input type="text" id="description" ng-model="currentSupplier.role.description" disabled="disabled"/>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>		        
+                    <button id="save" ng-click="save()" class="btn">Save</button>
+                    <button id="cancel" ng-click="cancel()" class="btn">Cancel</button>
+                </div>				    
+            </fieldset>
+
+            <div class="clearfix"></div>
+        </form>
+    </div>
+
+    <form id="list">
+        <fieldset>
+            <legend>Leistungserbringer Übersicht</legend>
+            <table id="table" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Rolle</th>
+                        <th>Beschreibung</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="supplier in suppliers">
+                        <td>{{supplier.employeeID}}</td>
+                        <td>{{supplier.lastname}} {{supplier.firstname}}</td>
+                        <td>{{supplier.role.type}}</td>
+                        <td>{{supplier.role.description}}</td>
+                        <td style="text-align: right;">
+                            <button id="edit" ng-click="edit(supplier)" class="btn">Edit</button>
+                            <button id="remove" ng-click="remove($index, supplier.id)" class="btn">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
     </form>
 </div>
