@@ -50,7 +50,7 @@ services.factory('Supplier', function($resource, url) {
  * Der Rest-Service TimePeriod gibt alle Zeitraeme zurueck
  */
 services.factory('TimePeriod', function($resource, url ) {
-    return $resource(url + 'timePeriods/treatment/:fid', {fid: '@fid'}, {
+    return $resource(url + 'timePeriods/:fid', {fid: '@fid'}, {
         'update': {method: 'PUT'}
     });
 });
