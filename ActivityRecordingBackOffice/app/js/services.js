@@ -67,6 +67,16 @@ services.factory('StandardCatalogue', function($resource, url) {
 });
 
 /*
+ * Der Rest-Service Approval gibt die erfasste Leistung mit id zurueck.
+ */
+services.factory('Approval', function($resource, url ) {
+    return $resource(url + 'activities/approval/:fid', {fid: '@fid'}, {
+        'update': {method: 'PUT'}
+    });
+});
+
+
+/*
  * Der Rest-Service Activity gibt die erfasste Leistung mit id zurueck.
  */
 services.factory('Activity', function($resource, url ) {

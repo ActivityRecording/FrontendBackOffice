@@ -16,16 +16,16 @@
                     </thead>
                     <tbody>
 
-                        <tr ng-repeat="case in cases">
-                            <td>{{case.treatmentNumber}}</td>
-                            <td>{{case.patient.patientNumber}} {{comment.author.surname}}</td>
-                            <td>{{case.patient.startTime| date:'dd.MM.yyyy'}}</td>
-                            <td>{{case.patient.lastName}}, {{case.patient.firstName}} </td>
-                            <td>{{case.patient.dateOfBirth| date:'dd.MM.yyyy'}}</td>
-                            <td style="text-align: right;">		                
-                                <button id="approve" ng-click="goTo(case.treatmentNumber)" class="btn">Freigabe starten</button>
-                            </td>
-                        </tr>
+                    <tr ng-repeat="case in cases" ng-show="!case.released">
+                        <td>{{case.treatmentNumber}}</td>
+                        <td>{{case.patient.patientNumber}} {{comment.author.surname}}</td>
+                        <td>{{case.startTime| date:'dd.MM.yyyy'}}</td>
+                        <td>{{case.patient.lastName}}, {{case.patient.firstName}} </td>
+                        <td>{{case.patient.dateOfBirth| date:'dd.MM.yyyy'}}</td>
+                        <td style="text-align: right;">		                
+                            <button id="approve" ng-click="goTo(case.treatmentNumber)" class="btn">Freigabe starten</button>
+                        </td>
+                    </tr>
 
                     </tbody>
                 </table>

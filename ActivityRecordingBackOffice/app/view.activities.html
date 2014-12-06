@@ -25,6 +25,10 @@
                     <input type="number" id="duration" ng-model="currentActivity.duration" required/>
                 </div>
                 <div class="control-group">
+                    <label for="amount">Anzahl</label>
+                    <input type="number" id="amount" ng-model="currentActivity.number" required/>
+                </div>
+                <div class="control-group">
                     <label for="treatmentNumber">Id</label>
                     <input type="treatmentNumber" id="id" ng-model="currentActivity.treatmentNumber" disabled="disabled"/>
                 </div>
@@ -50,6 +54,7 @@
                     <th>Beschreibung</th>
                     <th>Leistungserbringer</th>
                     <th>Dauer</th>
+                    <th>Anzahl</th>
                     <th></th>
                 </tr>
             </thead>
@@ -57,8 +62,9 @@
                 <tr ng-repeat="activity in activities">
                     <td>{{activity.tarmedActivityId}}</td>
                     <td>{{activity.description}}</td>
-                    <td>{{activity.employeeId}}</td>
+                    <td>{{activity.employeeId}}: {{activity.supplierLastname}}, {{activity.supplierFirstname}}</td>
                     <td>{{activity.duration}}</td>
+                    <td>{{activity.number}}</td>
                     <td style="text-align: right;">
                         <button id="save" ng-click="editActivity(activity)" class="btn">Bearbeiten</button>
                         <button id="remove" ng-click="remove($index, activity.id)" class="btn">Löschen</button>
@@ -75,7 +81,7 @@
             <fieldset>
                 <div class="control-group">
                     <label for="supplier">LE-ID</label>
-                    <select id="supplier" ng-model="currentTimePeriod.supplier.employeeID" 
+                    <select id="supplier" ng-model="currentTimePeriod.supplier" 
                                           ng-options="(supplier.firstname + ' ' + supplier.lastname) for supplier in suppliers">
                         <option value="">-- Leistungserbringer auswählen --</option>
                     </select>
@@ -132,10 +138,10 @@
             </thead>
             <tbody>
                 <tr ng-repeat="period in periods">
-                    <td>{{period.employeeId}}</td>
+                    <td>{{period.employeeId}}: {{period.supplierLastname}}, {{period.supplierFirstname}}</td>
                     <td>{{period.startTime}}</td>
                     <td>{{period.endTime}}</td>
-                    <td>ToDo</td>
+                    <td>{{period.endTime - period.startTime}}</td>
                     <td style="text-align: right;">
                         <button id="save" ng-click="editPeriod(period)" class="btn">Bearbeiten</button>
                         <button id="remove" ng-click="remove($index, period.id)" class="btn">Löschen</button>
