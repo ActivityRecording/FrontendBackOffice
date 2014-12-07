@@ -94,3 +94,15 @@ services.factory('TreatmentCase', function($resource, url ) {
     });
 });
 
+/*
+ * Der Rest-Service CaseTime gibt die erfassten und geleisten Zeiten
+ * pro FallID zurück.
+ */
+services.factory('CaseTime', function($resource, url ) {
+    return $resource(url + 'treatmentCases/times/:fid', {fid: '@fid'}, {
+        'update': {method:'PUT'}
+    });
+});
+
+
+
