@@ -47,12 +47,12 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
     $scope.currentActivity = new Activity();
     $scope.activities = new Approval.query({fid: $scope.fid});
     $scope.caseTime = new CaseTime.get({fid: $scope.fid});
+    $scope.currentTimePeriod = new TimePeriod();
     $scope.periods = TimePeriod.query({fid: $scope.fid});
     $scope.currentSupplier = new Supplier();
     $scope.suppliers = Supplier.query();
-    $scope.cancel = function () {
-        $scope.currentActivity = new Activity();
-    };
+    
+
     $scope.save = function (type) {
         //Activity
         if (type === 0) {
@@ -65,14 +65,21 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
 
                 var isNew = $scope.currentActivity.activityId == null;
                 if (isNew) {
-                    container.$save();
-                    $scope.activities = Approval.query({fid: $scope.fid}).$promise.then(function () {
+                   var promise = null ;
+                   container.$save().then(function(){
+                        $scope.activities = Approval.query({fid: $scope.fid});
+                        promise = $scope.activities.$promise;
+                    });
+                    promise.then(function () {
                         $scope.caseTime = CaseTime.get({fid: $scope.fid});
                     });
+//                    $scope.activities = Approval.query({fid: $scope.fid}).$promise.then(function () {
+//                        $scope.caseTime = CaseTime.get({fid: $scope.fid});
+//                    });
                 } else {
-                    container.$update();
-                    $scope.activities = Approval.query({fid: $scope.fid}).$promise.then(function () {
-                        $scope.caseTime = CaseTime.get({fid: $scope.fid});
+                    container.$update().then(function(){
+                        $scope.activities = Approval.query({fid: $scope.fid});
+                        promise = $scope.activities.$promise;
                     });
                 }
                 $scope.cancel();
@@ -89,19 +96,16 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
                 container.startTime = $scope.currentTimePeriod.startTime;
                 container.endTime = $scope.currentTimePeriod.endTime;
                 if (isNew) {
-                    container.$save();
-                    $scope.periods = TimePeriod.query({fid: $scope.fid}).$promise.then(function () {
-                        $scope.activities = Approval.query({fid: $scope.fid}).$promise.then(function () {
-                            $scope.caseTime = CaseTime.get({fid: $scope.fid});
-                        });
+                    container.$save().then(function(){
+                        $scope.periods = TimePeriod.query({fid: $scope.fid});
+                        $scope.activities = Approval.query({fid: $scope.fid});
+                        $scope.caseTime = CaseTime.get({fid: $scope.fid});
                     });
-//                    $scope.periods.push($scope.currentTimePeriod);
                 } else {
-                    container.$update();
-                    $scope.periods = TimePeriod.query({fid: $scope.fid}).$promise.then(function () {
-                        $scope.activities = Approval.query({fid: $scope.fid}).$promise.then(function () {
-                            $scope.caseTime = CaseTime.get({fid: $scope.fid});
-                        });
+                    container.$update().then(function(){
+                        $scope.periods = TimePeriod.query({fid: $scope.fid});
+                        $scope.activities = Approval.query({fid: $scope.fid});
+                        $scope.caseTime = CaseTime.get({fid: $scope.fid});
                     });
                 }
                 $scope.cancel();
@@ -119,6 +123,10 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
         TimePeriod.$remove({'fid': id});
     };
 
+    $scope.cancelPeriod = function () {
+        $scope.currentTimePeriod = new TimePeriod();
+    };
+
     $scope.editActivity = function (activity) {
         $scope.currentActivity = activity;
     };
@@ -127,6 +135,12 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
         $scope.activities.splice(index, 1);
         Activity.$remove({'fid': id});
     };
+
+    $scope.cancelActivity = function () {
+        $scope.currentActivity = new Activity();
+    };
+    
+
 
     $scope.back = function () {
         $location.path('/view.cases/');
@@ -159,9 +173,7 @@ function SuppliersCtrl($scope, Supplier) {
 
     $scope.currentSupplier = new Supplier();
     $scope.suppliers = Supplier.query();
-    $scope.cancel = function () {
-        $scope.currentSupplier = new Supplier();
-    };
+
     $scope.save = function () {
         if (!$scope.suppliersForm.$invalid) {
             var isNew = $scope.currentSupplier.id == null;
@@ -178,6 +190,11 @@ function SuppliersCtrl($scope, Supplier) {
     $scope.edit = function (supplier) {
         $scope.currentSupplier = supplier;
     };
+    
+    $scope.cancel = function () {
+        $scope.currentSupplier = new Supplier();
+    };
+    
     $scope.remove = function (index, id) {
         $scope.suppliers.splice(index, 1);
         Supplier.$remove({'id': id});
