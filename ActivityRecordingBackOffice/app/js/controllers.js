@@ -3,11 +3,12 @@
  */
 'use strict';
 var controllers = angular.module('controllers', ['services']);
-function MenuCtrl($scope, $route, $routeParams, $location) {
+function MenuCtrl($scope, $route, $routeParams, $location, TarmedCatalogueService) {
 
     $scope.$route = $route;
     $scope.$location = $location;
     $scope.$routeParams = $routeParams;
+    TarmedCatalogueService.copyCatalogue(); 
 }
 ;
 
@@ -44,9 +45,10 @@ function CasesCtrl($scope, $location, TreatmentCase) {
 }
 ;
 
-function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, CaseTime, TimePeriod, Supplier) {
+function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, CaseTime, TimePeriod, Supplier, TarmedCatalogueService) {
 
     $scope.fid = $routeParams.fid;
+    $scope.tarmed = TarmedCatalogueService;
     $scope.currentActivity = new Activity();
     $scope.activities = new Approval.query({fid: $scope.fid});
     $scope.caseTime = new CaseTime.get({fid: $scope.fid});
@@ -70,15 +72,13 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
                 if (isNew) {
                     container.$save().then(function () {
                         $scope.activities = Approval.query({fid: $scope.fid});
-
+                        
                         CaseTime.get({fid: $scope.fid}).then(function (caseTime) {
                             $scope.caseTime = caseTime;
                         });
                     }, function (err) {
                         // No activies found
                     });
-
-
 //                   var promise = null ;
 //                   container.$save().then(function(){
 //                        $scope.activities = Approval.query({fid: $scope.fid});
@@ -125,10 +125,10 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
         }
     };
 
-    $scope.onTimeSet = function (newDate, oldDate) {
-        console.log(newDate);
-        console.log(oldDate);
-    }
+//    $scope.onTimeSet = function (newDate, oldDate) {
+//        console.log(newDate);
+//        console.log(oldDate);
+//    }
 
     $scope.editPeriod = function (period) {
         $scope.currentTimePeriod = period;
@@ -156,8 +156,6 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
         $scope.currentActivity = new Activity();
     };
 
-
-
     $scope.back = function () {
         $location.path('/view.cases/');
     };
@@ -166,7 +164,7 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
     };
 }
 ;
-function ApprovalCtrl($scope, $routeParams, $location, Approval, CaseTime, TimePeriod, TreatmentCase) {
+function ApprovalCtrl($scope, $routeParams, $location, Approval, CaseTime, TimePeriod) {
 
     $scope.fid = $routeParams.fid;
     $scope.activities = Approval.query({fid: $scope.fid});

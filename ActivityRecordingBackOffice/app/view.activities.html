@@ -7,8 +7,12 @@
         <form id="form" name="activitiesForm">
             <fieldset>
                 <div class="control-group">
-                    <label for="tarmedid">Tarmed-ID</label>
-                    <input type="text" id="tarmedid" ng-model="currentActivity.tarmedActivityId" ng-minlength="2" ng-minlength="255" required />
+                    <label for="tramedFilter">Tarmed-Filter</label>
+                    <input type="text" id="tramedFilter" ng-model="searchText"/>
+                    <label for="tarmedid">Tarmed</label>
+                     <select id="tarmedid" ng-model="currentActivity.tarmedActivityId" ng-options="(item.id + ' ' + item.description) for item in tarmed.catalogue | filter:searchText" required>
+                        <option value="">-- Tarmed Suche--</option>
+                    </select>
                 </div>
                 <div class="control-group">
                     <label for="description">Beschreibung</label>
@@ -16,7 +20,7 @@
                 </div>
                 <div class="control-group">
                     <label for="supplier">Leistungserbringer</label>
-                    <select id="supplier" ng-model="currentActivity.supplier" ng-options="(supplier.lastname + ' ' + supplier.firstname) for supplier in suppliers">
+                    <select id="supplier" ng-model="currentActivity.supplier" ng-options="(supplier.lastname + ' ' + supplier.firstname) for supplier in suppliers ">
                         <option value="">-- Leistungserbringer auswählen --</option>
                     </select>
                 </div>
@@ -123,12 +127,6 @@
                         </ul>
                     </div>
                 </div>
-
-
-
-
-
-
 
                 <div class="control-group">
                     <label for="duration">Dauer</label>

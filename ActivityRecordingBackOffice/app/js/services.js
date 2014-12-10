@@ -105,4 +105,37 @@ services.factory('CaseTime', function($resource, url ) {
 });
 
 
+/*
+ * Der Rest-Service TarmedActivity gibt alle Tarmed-Einträge zurück
+ */
+services.factory('TarmedActivities', function($resource, url ) {
+    return $resource(url + 'tarmedActivities', {}, {
+    });
+});
+
+
+/*
+ * Der TarmedKatalog stellt eine in Memory Kopie zur Suche und Filterung dar.
+ * Diese wird initial beim Starten der Web App einmal geladen und
+ * kann dann in den Controllern jederzeit verwendet werden
+ */
+services.factory('TarmedCatalogueService', function(TarmedActivities){
+    var service = {};
+    service.catalogue = null;
+    
+    var self = this;
+    self.done = false;   
+    
+    service.copyCatalogue = function(){
+        if(!self.done){
+            service.catalogue = new TarmedActivities.query();
+            service.catalogue.$promise.then(function(){
+                self.done = true;   
+            });
+        }
+    }; 
+    return service;
+});
+
+
 
