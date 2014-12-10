@@ -82,18 +82,54 @@
                 <div class="control-group">
                     <label for="supplier">LE-ID</label>
                     <select id="supplier" ng-model="currentTimePeriod.supplier" 
-                                          ng-options="(supplier.firstname + ' ' + supplier.lastname) for supplier in suppliers">
+                            ng-options="(supplier.firstname + ' ' + supplier.lastname) for supplier in suppliers">
                         <option value="">-- Leistungserbringer auswählen --</option>
                     </select>
                 </div>
                 <div class="control-group">
                     <label for="starttime">Von</label>
-                    <input type="text" id="starttime" ng-model="currentTimePeriod.startTime" date="dd.MM.yyyy" ui-date="{ dateFormat: 'dd.mm.yy' }" required />
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="">    
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-ng-model="currentTimePeriod.startTime">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            </div>    
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <datetimepicker data-ng-model="currentTimePeriod.startTime"
+                                            data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }">
+                            </datetimepicker>
+                        </ul>
+                    </div>
+
+
+                    <!--  <input type="text" id="starttime" ng-model="currentTimePeriod.startTime" date="dd.MM.yyyy" ui-date="{ dateFormat: 'dd.mm.yy' }" required />
+                          <input type="text" id="endtime" ng-model="currentTimePeriod.endTime" date="dd.MM.yyyy" ui-date="{ dateFormat: 'dd.mm.yy' }" required />
+                    -->
                 </div>
                 <div class="control-group">
                     <label for="endtime">Bis</label>
-                    <input type="text" id="endtime" ng-model="currentTimePeriod.endTime" date="dd.MM.yyyy" ui-date="{ dateFormat: 'dd.mm.yy' }" required />
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="">    
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-ng-model="currentTimePeriod.endTime">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            </div>    
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <datetimepicker data-ng-model="currentTimePeriod.endTime"
+                                            data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }">
+                            </datetimepicker>
+                        </ul>
+                    </div>
                 </div>
+
+
+
+
+
+
+
                 <div class="control-group">
                     <label for="duration">Dauer</label>
                     <input type="number" id="duration" ng-model="currentTimePeriod.duration" rows="5" required/>

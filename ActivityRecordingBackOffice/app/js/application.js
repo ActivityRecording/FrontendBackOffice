@@ -1,6 +1,6 @@
 'use strict';
 
-var ActivityRecordingBackOffice = angular.module('ActivityRecordingBackOffice', ['ngRoute','controllers', 'services', 'config']);
+var ActivityRecordingBackOffice = angular.module('ActivityRecordingBackOffice', ['ngRoute','controllers', 'services', 'config', 'ui.bootstrap.datetimepicker']);
 
 ActivityRecordingBackOffice.config(function($routeProvider) {
 		

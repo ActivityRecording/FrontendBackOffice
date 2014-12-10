@@ -1,11 +1,24 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
+        <!-- Verwendete externe CSS Libraries-->
+        <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap-theme.css">
+        <link rel="stylesheet" type="text/css" href="css/template.css">
+        <link rel="stylesheet" type="text/css" href="css/angular-ui/datetimepicker.css">
+        
+        
+        <!-- Verwendete externe Java-Script Libraries-->
+        <script type="text/javascript" src="js/jquery/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap/bootstrap.js"></script>
+        <script type="text/javascript" src="js/bootstrap/ui-bootstrap-tpls-0.11.2.min.js"></script>
         <script type="text/javascript" src="js/angularjs/angular.js"></script>
         <script type="text/javascript" src="js/angularjs/angular-resource.js"></script>
         <script type="text/javascript" src="js/angularjs/angular-route.js"></script>
-        <script type="text/javascript" src="js/bootstrap/bootstrap.js"></script>
+        <script type="text/javascript" src="js/angularjs/moment-with-locales.min.js"></script>
+        <script type="text/javascript" src="js/angularjs/datetimepicker.js"></script>
 
+        <!-- Eigene Angular Java-Script Implemntationen -->
         <script type="text/javascript" src="js/application.js"></script>
         <script type="text/javascript" src="js/controllers.js"></script>
         <script type="text/javascript" src="js/services.js"></script>
@@ -13,21 +26,26 @@
         <script type="text/javascript" src="js/config.js"></script>
 
 
-        <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="css/template.css">
 
+
+        <!-- MLE Backoffice - Menü -->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>MLE Backoffice</title>
     </head>
     <body ng-app="ActivityRecordingBackOffice">
         <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container-fluid">
-                    <a class="brand" href="#">ActivityRecordingBackOffice</a>
+            <div class="navbar-header">
+               
+                 <div class="container-fluid">
+                    <a class="navbar-brand" href="#">ActivityRecordingBackOffice</a>
+                    
+                     <a class="navbar-text" href="#/view.cases">Behandlungsfälle</a>
+                      <a class="navbar-text" href="#/view.suppliers">Leistungserbringer</a>
                 </div>
             </div>
         </div>
-        <div id="wrapper" class="container-fluid">
+        <div id="main" class="span10 well" ng-view></div>
+        <!--<div id="wrapper" class="container-fluid">
             <div class="row-fluid">
                 <div id="sidebar" class="span2">
                     <div class="well sidebar-nav" ng-controller="MenuCtrl">
@@ -46,8 +64,8 @@
                         </ul>
                     </div>
                 </div>
-                <div id="main" class="span10 well" ng-view></div>
+
             </div>
-        </div>
+        </div>-->
     </body>
 </html>

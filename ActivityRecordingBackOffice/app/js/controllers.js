@@ -1,3 +1,6 @@
+/* 
+ * MLE Backoffice Controllers
+ */
 'use strict';
 var controllers = angular.module('controllers', ['services']);
 function MenuCtrl($scope, $route, $routeParams, $location) {
@@ -51,7 +54,7 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
     $scope.periods = TimePeriod.query({fid: $scope.fid});
     $scope.currentSupplier = new Supplier();
     $scope.suppliers = Supplier.query();
-    
+
 
     $scope.save = function (type) {
         //Activity
@@ -65,19 +68,27 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
 
                 var isNew = $scope.currentActivity.activityId == null;
                 if (isNew) {
-                   var promise = null ;
-                   container.$save().then(function(){
+                    container.$save().then(function () {
                         $scope.activities = Approval.query({fid: $scope.fid});
-                        promise = $scope.activities.$promise;
+
+                        CaseTime.get({fid: $scope.fid}).then(function (caseTime) {
+                            $scope.caseTime = caseTime;
+                        });
+                    }, function (err) {
+                        // No activies found
                     });
-                    promise.then(function () {
-                        $scope.caseTime = CaseTime.get({fid: $scope.fid});
-                    });
-//                    $scope.activities = Approval.query({fid: $scope.fid}).$promise.then(function () {
+
+
+//                   var promise = null ;
+//                   container.$save().then(function(){
+//                        $scope.activities = Approval.query({fid: $scope.fid});
+//                        promise = $scope.activities.$promise;
+//                    });
+//                    promise.then(function () {
 //                        $scope.caseTime = CaseTime.get({fid: $scope.fid});
 //                    });
                 } else {
-                    container.$update().then(function(){
+                    container.$update().then(function () {
                         $scope.activities = Approval.query({fid: $scope.fid});
                         promise = $scope.activities.$promise;
                     });
@@ -96,13 +107,13 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
                 container.startTime = $scope.currentTimePeriod.startTime;
                 container.endTime = $scope.currentTimePeriod.endTime;
                 if (isNew) {
-                    container.$save().then(function(){
+                    container.$save().then(function () {
                         $scope.periods = TimePeriod.query({fid: $scope.fid});
                         $scope.activities = Approval.query({fid: $scope.fid});
                         $scope.caseTime = CaseTime.get({fid: $scope.fid});
                     });
                 } else {
-                    container.$update().then(function(){
+                    container.$update().then(function () {
                         $scope.periods = TimePeriod.query({fid: $scope.fid});
                         $scope.activities = Approval.query({fid: $scope.fid});
                         $scope.caseTime = CaseTime.get({fid: $scope.fid});
@@ -113,6 +124,11 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
             }
         }
     };
+
+    $scope.onTimeSet = function (newDate, oldDate) {
+        console.log(newDate);
+        console.log(oldDate);
+    }
 
     $scope.editPeriod = function (period) {
         $scope.currentTimePeriod = period;
@@ -139,7 +155,7 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
     $scope.cancelActivity = function () {
         $scope.currentActivity = new Activity();
     };
-    
+
 
 
     $scope.back = function () {
@@ -190,11 +206,11 @@ function SuppliersCtrl($scope, Supplier) {
     $scope.edit = function (supplier) {
         $scope.currentSupplier = supplier;
     };
-    
+
     $scope.cancel = function () {
         $scope.currentSupplier = new Supplier();
     };
-    
+
     $scope.remove = function (index, id) {
         $scope.suppliers.splice(index, 1);
         Supplier.$remove({'id': id});
