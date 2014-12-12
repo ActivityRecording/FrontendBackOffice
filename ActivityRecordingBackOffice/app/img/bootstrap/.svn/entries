@@ -2,7 +2,7 @@
 
 dir
 56
-https://svn.bfh.ch/repos/projects/maven/ch.bfh.swos.camerareview.rest/src/main/webapp/css/bootstrap
+https://svn.bfh.ch/repos/projects/maven/ch.bfh.swos.camerareview.rest/src/main/webapp/img/bootstrap
 https://svn.bfh.ch/repos/projects/maven
 
 
@@ -26,17 +26,18 @@ svn:special svn:externals svn:needs-lock
 
 68ec8986-3a0d-e211-8bc8-005056a6000b
 
-bootstrap-responsive.css
+glyphicons-halflings-white.png
 file
 
 
 
-delete
-2013-01-05T14:33:04.243000Z
-b626be49731b63affaa1bd71fed6f8b8
+
+2013-01-05T14:33:04.345000Z
+9bbc6e9602998a385c2ea13df56470fd
 2013-01-04T22:14:01.078435Z
 31
 beiem1
+has-props
 
 
 
@@ -57,20 +58,20 @@ beiem1
 
 
 
-
-21751
+8777
 
-bootstrap.css
+glyphicons-halflings.png
 file
 
 
 
 
-2014-12-10T15:00:37.928000Z
-101205d0b6e392c86bbf404a7190dd3c
+2013-01-05T14:33:04.361000Z
+2516339970d710819585f90773aebe0a
 2013-01-04T22:14:01.078435Z
 31
 beiem1
+has-props
 
 
 
@@ -91,6 +92,5 @@ beiem1
 
 
 
-
-130262
+12799
 
