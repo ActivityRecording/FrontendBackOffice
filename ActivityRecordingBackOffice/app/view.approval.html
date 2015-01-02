@@ -1,4 +1,5 @@
-<h2>Freigabe des Behandlungsfalls {{fid}} - [Erfasste Zeit: {{caseTime.measuredHours}}:{{caseTime.measuredMinutes}} | Zugewiesene Zeit: {{caseTime.allocatedHours}}:{{caseTime.allocatedMinutes}}]</h2>
+<h2>{{fid}} - {{patient.lastName}}, {{patient.firstName}}  {{patient.dateOfBirth|date:'dd.MM.yyyy'}} - Gemessene Zeit: {{caseTime.measuredHours}}:{{caseTime.measuredMinutes}} Verrechnete Zeit: {{caseTime.allocatedHours}}:{{caseTime.allocatedMinutes}}</h2>
+<br>
 <div ng-controller="ApprovalCtrl">
     <!-- Leistungstabelle -->
     <h4>Übersicht Leistungen</h4>

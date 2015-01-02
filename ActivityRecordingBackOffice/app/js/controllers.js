@@ -45,7 +45,7 @@ function CasesCtrl($scope, $location, TreatmentCase) {
 }
 ;
 
-function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, CaseTime, TimePeriod, Supplier, TarmedCatalogueService) {
+function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, CaseTime, TimePeriod, Supplier, TarmedCatalogueService, Patient) {
 
     $scope.fid = $routeParams.fid;
     $scope.tarmed = TarmedCatalogueService;
@@ -55,6 +55,7 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
     $scope.currentTimePeriod = new TimePeriod();
     $scope.periods = TimePeriod.query({fid: $scope.fid});
     $scope.currentSupplier = new Supplier();
+    $scope.patient = Patient.get({fid: $scope.fid});
     $scope.suppliers = Supplier.query();
 
 
@@ -164,12 +165,13 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
     };
 }
 ;
-function ApprovalCtrl($scope, $routeParams, $location, Approval, CaseTime, TimePeriod) {
+function ApprovalCtrl($scope, $routeParams, $location, Approval, CaseTime, TimePeriod, Patient) {
 
     $scope.fid = $routeParams.fid;
     $scope.activities = Approval.query({fid: $scope.fid});
     $scope.caseTime = CaseTime.get({fid: $scope.fid});
     $scope.periods = TimePeriod.query({fid: $scope.fid});
+    $scope.patient = Patient.get({fid: $scope.fid});
 
     $scope.back = function () {
         $location.path('/view.activities/' + $scope.fid);
