@@ -66,36 +66,73 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
                 var container = new Activity();
                 container.employeeId = $scope.currentActivity.supplier.employeeID;
                 container.treatmentNumber = $scope.fid;
-                container.tarmedActivityId = $scope.currentActivity.tarmedActivityId;
+                container.tarmedActivityId = $scope.currentActivity.tarmedActivityId.id;
                 container.number = $scope.currentActivity.number;
+                $scope.empNr = $scope.currentActivity.number;
 
+
+                //Zuweisung überprüfen
                 var isNew = $scope.currentActivity.activityId == null;
+  
                 if (isNew) {
-                    container.$save().then(function () {
-                        $scope.activities = Approval.query({fid: $scope.fid});
-                        
-                        CaseTime.get({fid: $scope.fid}).then(function (caseTime) {
-                            $scope.caseTime = caseTime;
-                        });
-                    }, function (err) {
-                        // No activies found
-                    });
-//                   var promise = null ;
-//                   container.$save().then(function(){
+                    container.$save({},
+                        function () {
+                            $scope.activities = Approval.query({fid: $scope.fid},
+                            
+                                function () {
+                                    $scope.caseTime = CaseTime.get({fid: $scope.fid},
+                                            function (caseTime) {
+                                            // do nothing
+                                            },
+                                            function (err) {alert("Error in CaseTime.get" + err)}
+                                    )
+                                },    
+                                function (err) {alert("Error in Approval.get" + err)}               
+                            );
+                           
+                        },
+                        function (err) {alert("Error in Activity.save" + err)}
+                    );
+                } else {
+                    container.$update(
+                        {},
+                        function () {
+                            $scope.activities = Approval.query({fid: $scope.fid});
+                        },
+                        function (err) {alert("Error in Approval.query" + err)}
+                    );
+                }
+                $scope.cancelPeriod();
+                $scope.activitiesForm.$setPristine();
+                
+                
+                
+//                if (isNew) {
+//                    container.$save().then(function () {
+//                        $scope.activities = Approval.query({fid: $scope.fid});
+//                        
+//                        CaseTime.get({fid: $scope.fid}).then(function (caseTime) {
+//                            $scope.caseTime = caseTime;
+//                        });
+//                    }, function (err) {
+//                        // No activies found
+//                    });
+////                   var promise = null ;
+////                   container.$save().then(function(){
+////                        $scope.activities = Approval.query({fid: $scope.fid});
+////                        promise = $scope.activities.$promise;
+////                    });
+////                    promise.then(function () {
+////                        $scope.caseTime = CaseTime.get({fid: $scope.fid});
+////                    });
+//                } else {
+//                    container.$update().then(function () {
 //                        $scope.activities = Approval.query({fid: $scope.fid});
 //                        promise = $scope.activities.$promise;
 //                    });
-//                    promise.then(function () {
-//                        $scope.caseTime = CaseTime.get({fid: $scope.fid});
-//                    });
-                } else {
-                    container.$update().then(function () {
-                        $scope.activities = Approval.query({fid: $scope.fid});
-                        promise = $scope.activities.$promise;
-                    });
-                }
-                $scope.cancel();
-                $scope.activitiesForm.$setPristine();
+//                }
+//                $scope.cancel();
+//                $scope.activitiesForm.$setPristine();
             }
         }
         //TimePeriod
