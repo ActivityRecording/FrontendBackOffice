@@ -2,8 +2,36 @@
 <br>
 <div ng-controller="ActivitiesCtrl">
 
+
+    <div class="container">
+        <div class="row bs-wizard" style="border-bottom:0;">
+
+            <div class="col-xs-3 bs-wizard-step complete">
+                <div class="text-center bs-wizard-stepnum">Schritt 1</div>
+                <div class="progress"><div class="progress-bar"></div></div>
+                <a ng-click="back()" class="bs-wizard-dot"></a>
+                <div class="bs-wizard-info text-center">Auswahl des Falls & Freigabe starten.</div>
+            </div>
+
+            <div class="col-xs-3 bs-wizard-step active">
+                <div class="text-center bs-wizard-stepnum">Schritt 2</div>
+                <div class="progress"><div class="progress-bar"></div></div>
+                <a href="#" class="bs-wizard-dot"></a>
+                <div class="bs-wizard-info text-center">Überprüfung & Bearbeitung des Falls</div>
+            </div>
+
+            <div class="col-xs-3 bs-wizard-step disabled">
+                <div class="text-center bs-wizard-stepnum">Schritt 3</div>
+                <div class="progress"><div class="progress-bar"></div></div>
+                <a ng-click="next()" class="bs-wizard-dot"></a>
+                <div class="bs-wizard-info text-center">Freigabe des Falls</div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Leistungsbearbeitung -->
-    <h4>Leistungen bearbeiten</h4>
+    <h4>Leistungen</h4>
     <div class="well" >
         <form class="form-horizontal" role="form" id="form" name="activitiesForm">
             <fieldset>
@@ -56,35 +84,36 @@
     </div>
 
     <!-- Leistungstabelle -->
-    <h4>Leistungen</h4>
-    <fieldset>
-        <table id="tbl_Activities" class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Tarmed-ID</th>
-                    <th>Beschreibung</th>
-                    <th>Leistungserbringer</th>
-                    <th>Dauer</th>
-                    <th>Anzahl</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="activity in activities">
-                    <td>{{activity.tarmedActivityId}}</td>
-                    <td>{{activity.description}}</td>
-                    <td>{{activity.employeeId}}: {{activity.supplierLastname}}, {{activity.supplierFirstname}}</td>
-                    <td>{{activity.duration}}</td>
-                    <td>{{activity.number}}</td>
-                    <td style="text-align: right;">
-                        <button id="save" ng-click="editActivity(activity)" class="btn">Bearbeiten</button>
-                        <button id="remove" ng-click="removeActivity($index, activity.id)" class="btn">Löschen</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </fieldset>
-
+    <h4>Hinterlegte Leistungen</h4>
+    <div class="well" >
+        <fieldset>
+            <table id="tbl_Activities" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tarmed-ID</th>
+                        <th>Beschreibung</th>
+                        <th>Leistungserbringer</th>
+                        <th>Dauer</th>
+                        <th>Anzahl</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="activity in activities">
+                        <td>{{activity.tarmedActivityId}}</td>
+                        <td>{{activity.description}}</td>
+                        <td>{{activity.employeeId}}: {{activity.supplierLastname}}, {{activity.supplierFirstname}}</td>
+                        <td>{{activity.duration}}</td>
+                        <td>{{activity.number}}</td>
+                        <td style="text-align: right;">
+                            <button id="save" ng-click="editActivity(activity)" class="btn">Bearbeiten</button>
+                            <button id="remove" ng-click="removeActivity($index, activity.id)" class="btn">Löschen</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
 
     <h4>Zeiten</h4>
     <div class="well" >
@@ -157,37 +186,41 @@
     </div>
 
     <h4>Hinterlegte Zeitmessungen [FID {{fid}}]</h4>
-    <fieldset>
-        <table id="tbl_TimePeriods" class="table table-striped">
-            <thead>
-                <tr>
-                    <th>LE-ID</th>
-                    <th>Von</th>
-                    <th>Bis</th>
-                    <th>Dauer</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="period in periods">
-                    <td>{{period.employeeId}}: {{period.supplierLastname}}, {{period.supplierFirstname}}</td>
-                    <td>{{period.startTime|date: 'yyyy.MM.dd - HH:mm'}}</td>
-                    <td>{{period.endTime|date: 'yyyy.MM.dd - HH:mm'}}</td>
-                    <td>ToDo</td>
-                    <td style="text-align: right;">
-                        <button id="save" ng-click="editPeriod(period)" class="btn">Bearbeiten</button>
-                        <button id="remove" ng-click="removePeriod($index, period.id)" class="btn">Löschen</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </fieldset>
-    <fieldset>                
-        <div class="control-group">
-            <div class="col-sm-1"><button id="save" ng-click="back()" class="btn">Zurück</button></div>
-            <div class="col-sm-offset-11"><button id="next" ng-click="next()" class="btn">Weiter</button></div>
-        </div>
-    </fieldset>    
+    <div class="well" >
+        <fieldset>
+            <table id="tbl_TimePeriods" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>LE-ID</th>
+                        <th>Von</th>
+                        <th>Bis</th>
+                        <th>Dauer</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="period in periods">
+                        <td>{{period.employeeId}}: {{period.supplierLastname}}, {{period.supplierFirstname}}</td>
+                        <td>{{period.startTime|date: 'yyyy.MM.dd - HH:mm'}}</td>
+                        <td>{{period.endTime|date: 'yyyy.MM.dd - HH:mm'}}</td>
+                        <td>ToDo</td>
+                        <td style="text-align: right;">
+                            <button id="save" ng-click="editPeriod(period)" class="btn">Bearbeiten</button>
+                            <button id="remove" ng-click="removePeriod($index, period.id)" class="btn">Löschen</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </div>    
+    <nav>
+        <ul class="pager">
+            <li><a class="previous" ng-click="back()"> <span aria-hidden="true">&larr;</span>Zurück</a></li>
+            <li><a class="next" ng-click="next()"> <span aria-hidden="true">&rarr;</span>Weiter</a></li>
+        </ul>
+    </nav>
+
+
 </div>
 
 

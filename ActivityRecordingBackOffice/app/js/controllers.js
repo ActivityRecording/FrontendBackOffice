@@ -9,6 +9,7 @@ function MenuCtrl($scope, $route, $routeParams, $location, TarmedCatalogueServic
     $scope.$location = $location;
     $scope.$routeParams = $routeParams;
     TarmedCatalogueService.copyCatalogue(); 
+    $location.path('/view.cases/');
 }
 ;
 

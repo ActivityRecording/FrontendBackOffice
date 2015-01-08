@@ -1,5 +1,32 @@
 <h2>Behandlungsfälle</h2>
 <div ng-controller="CasesCtrl">
+
+    <div class="container">
+        <div class="row bs-wizard" style="border-bottom:0;">
+
+            <div class="col-xs-3 bs-wizard-step active">
+                <div class="text-center bs-wizard-stepnum">Schritt 1</div>
+                <div class="progress"><div class="progress-bar"></div></div>
+                <a href="#" class="bs-wizard-dot"></a>
+                <div class="bs-wizard-info text-center">Auswahl des Falls & Freigabe starten.</div>
+            </div>
+
+            <div class="col-xs-3 bs-wizard-step disabled">
+                <div class="text-center bs-wizard-stepnum">Schritt 2</div>
+                <div class="progress"><div class="progress-bar"></div></div>
+                <a href="#" class="bs-wizard-dot"></a>
+                <div class="bs-wizard-info text-center">Überprüfung & Bearbeitung des Falls</div>
+            </div>
+
+            <div class="col-xs-3 bs-wizard-step disabled">
+                <div class="text-center bs-wizard-stepnum">Schritt 3</div>
+                <div class="progress"><div class="progress-bar"></div></div>
+                <a href="#" class="bs-wizard-dot"></a>
+                <div class="bs-wizard-info text-center">Freigabe des Falls</div>
+            </div>
+        </div>
+    </div>
+
     <div class="well" >
         <div ng-controller="CasesCtrl">
             <fieldset>
@@ -16,16 +43,16 @@
                     </thead>
                     <tbody>
 
-                    <tr ng-repeat="case in cases" ng-show="!case.released">
-                        <td>{{case.treatmentNumber}}</td>
-                        <td>{{case.patient.patientNumber}} {{comment.author.surname}}</td>
-                        <td>{{case.startTime| date:'dd.MM.yyyy'}}</td>
-                        <td>{{case.patient.lastName}}, {{case.patient.firstName}} </td>
-                        <td>{{case.patient.dateOfBirth| date:'dd.MM.yyyy'}}</td>
-                        <td style="text-align: right;">		                
-                            <button id="approve" ng-click="goTo(case.treatmentNumber)" class="btn">Freigabe starten</button>
-                        </td>
-                    </tr>
+                        <tr ng-repeat="case in cases" ng-show="!case.released">
+                            <td>{{case.treatmentNumber}}</td>
+                            <td>{{case.patient.patientNumber}} {{comment.author.surname}}</td>
+                            <td>{{case.startTime| date:'dd.MM.yyyy'}}</td>
+                            <td>{{case.patient.lastName}}, {{case.patient.firstName}} </td>
+                            <td>{{case.patient.dateOfBirth| date:'dd.MM.yyyy'}}</td>
+                            <td class="text-right">		                
+                                <button id="approve" ng-click="goTo(case.treatmentNumber)" class="btn">Freigabe starten</button>
+                            </td>
+                        </tr>
 
                     </tbody>
                 </table>
