@@ -10,7 +10,7 @@
                 <div class="text-center bs-wizard-stepnum">Schritt 1</div>
                 <div class="progress"><div class="progress-bar"></div></div>
                 <a ng-click="back()" class="bs-wizard-dot"></a>
-                <div class="bs-wizard-info text-center">Auswahl des Falls & Freigabe starten.</div>
+                <div class="bs-wizard-info text-center">Auswahl des Falls & Freigabe starten</div>
             </div>
 
             <div class="col-xs-3 bs-wizard-step active">
@@ -35,16 +35,10 @@
     <div class="well" >
         <form class="form-horizontal" role="form" id="form" name="activitiesForm">
             <fieldset>
-                <div class="form-group">
+                <div class="form-group" ng-if="createActivity">
                     <label class="col-lg-1 control-label" for="tarmedFilter">Tarmed-Filter</label>
                     <div class="col-lg-3">
                         <input class="form-control input-sm" type="text" id="tarmedFilter" ng-model="searchText"/>
-                    </div>
-                    <label class="col-lg-1 control-label" for="supplier">Leistungserbringer</label>
-                    <div class="col-lg-2">
-                        <select class="form-control input-sm" id="supplier" ng-model="currentActivity.supplier" ng-options="(supplier.lastname + ' ' + supplier.firstname) for supplier in suppliers ">
-                            <option value="">-- Leistungserbringer auswählen --</option>
-                        </select>
                     </div>
                     <label class="col-lg-1 control-label" for="treatmentNumber">Id</label>
                     <div class="col-lg-1">
@@ -54,20 +48,28 @@
 
                 <div class="form-group">
                     <label class="col-lg-1 control-label" for="tarmedid">Tarmed</label>
-                    <div class="col-lg-3">
-                        <select class="form-control input-sm" id="tarmedid" ng-model="currentActivity.tarmedActivityId" ng-options="(item.id + ' ' + item.description) for item in tarmed.catalogue | filter:searchText" required>
+                    <div class="col-lg-3" ng-if="createActivity">
+                        <select class="form-control input-sm" id="tarmedidDD" ng-model="currentActivity.tarmedActivityId" ng-options="(item.id + ' ' + item.description) for item in tarmed.catalogue | filter:searchText" required>
                             <option value="">-- Tarmed Suche--</option>
                         </select>
                     </div>
+                    <div class="col-lg-3" ng-if="!createActivity">
+                        <input class="form-control input-sm" type="text" id="tarmedidIB" ng-model="tarmedDescription" disabled="disabled"/>
+                    </div>     
+
+                    <label class="col-lg-1 control-label" for="supplier">Leistungserbringer</label>
+                    <div class="col-lg-2" ng-if="createActivity">
+                        <select class="form-control input-sm" id="supplier" ng-model="currentActivity.supplier" ng-options="(supplier.lastname + ' ' + supplier.firstname) for supplier in suppliers ">
+                            <option value="">-- Leistungserbringer auswählen --</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2" ng-if="!createActivity">
+                        <input class="form-control input-sm" type="text" id="supplierIB" ng-model="supplierName" disabled="disabled"/>
+                    </div> 
 
                     <label class="col-lg-1 control-label" for="amount">Anzahl</label>
                     <div class="col-lg-1">
-                        <input class="form-control input-sm" type="number" id="amount" ng-model="currentActivity.number" required/>
-                    </div>
-
-                    <label class="col-lg-1 control-label" for="treatmentNumber">Id</label>
-                    <div class="col-lg-1">
-                        <input class="form-control input-sm" type="number" id="id" ng-model="currentActivity.treatmentNumber" disabled="disabled"/>
+                        <input class="form-control input-s" type="number" id="amount" ng-model="currentActivity.number" required/>
                     </div>
                 </div>
 
@@ -75,10 +77,11 @@
                     <label>&nbsp;</label>
                     <div class="col-lg-offset-8">
                         <button id="cancel" ng-click="cancelActivity()" class="btn">Abbrechen</button>
-                        <button id="save" ng-click="save(0)" class="btn">Sichern</button>	
+                        <button id="save" ng-click="saveActivity" class="btn">Sichern</button>	
                     </div>   
                 </div>   	    
             </fieldset>
+
             <div class="clearfix"></div>
         </form>
     </div>
@@ -107,7 +110,7 @@
                         <td>{{activity.number}}</td>
                         <td style="text-align: right;">
                             <button id="save" ng-click="editActivity(activity)" class="btn">Bearbeiten</button>
-                            <button id="remove" ng-click="removeActivity($index, activity.id)" class="btn">Löschen</button>
+                            <button id="remove" ng-click="removeActivity(activity)" class="btn">Löschen</button>
                         </td>
                     </tr>
                 </tbody>
@@ -117,70 +120,78 @@
 
     <h4>Zeiten</h4>
     <div class="well" >
-        <form name="timePeriodForm">
-            <fieldset>
-                <div class="form-group row">
-                    <label class="col-lg-1 control-label" for="supplier">LE-ID</label>
-                    <div class="col-lg-3">
-                        <select class="form-control input-sm" id="supplier" ng-model="currentTimePeriod.supplier" 
-                                ng-options="(supplier.firstname + ' ' + supplier.lastname) for supplier in suppliers">
-                            <option value="">-- Leistungserbringer auswählen --</option>
-                        </select>
+        <form class="form-horizontal" role="form" name="timePeriodForm">
+            <div > 
+                <fieldset>
+                    <div class="form-group row">
+                        <label class="col-lg-1 control-label" for="supplier">LE-ID</label>
+
+                        <div class="col-lg-3" ng-if="createPeriod">
+                            <select class="form-control input-sm" id="supplierDD" ng-model="currentTimePeriod.supplier" 
+                                    ng-options="(supplier.firstname + ' ' + supplier.lastname) for supplier in suppliers">
+                                <option value="">-- Leistungserbringer auswählen --</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2" ng-if="!createPeriod">
+                            <input class="form-control input-sm" type="text" id="supplierIB" ng-model="supplierName" disabled="disabled"/>
+                        </div> 
+
+                        <label class="col-lg-1 control-label" for="duration">Dauer</label>
+                        <div class="col-lg-1">
+                            <input class="form-control input-sm" type="text" id="duration" ng-model="duration" disabled="disabled"/>
+                        </div>    
+
+                        <label class="col-lg-1 control-label" for="id">Id</label>
+                        <div class="col-lg-1">
+                            <input class="form-control input-sm" type="text" id="id" ng-model="currentTimePeriod.timePeriodId" disabled="disabled"/>
+                        </div>      
+                    </div>  
+
+                    <div class="form-group row">
+                        <label class="col-lg-1 control-label" for="starttime">Von</label>
+                        <div class="col-lg-3">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="">    
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-ng-model="currentTimePeriod.startTime">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                    </div>    
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                    <datetimepicker data-ng-model="currentTimePeriod.startTime"
+                                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }">
+                                    </datetimepicker>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <label class="col-lg-1 control-label" for="endtime">Bis</label>
+                        <div class="col-lg-3">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="">    
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-ng-model="currentTimePeriod.endTime">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                    </div>    
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                    <datetimepicker data-ng-model="currentTimePeriod.endTime"
+                                                    data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }">
+                                    </datetimepicker>
+                                </ul>
+                            </div>
+                        </div>    
                     </div>
-                    <label class="col-lg-1 control-label" for="duration">Dauer</label>
-                    <div class="col-lg-1">
-                        <input class="form-control input-sm" type="number" id="duration" ng-model="currentTimePeriod.duration" disabled="disabled" rows="5" required/>
-                    </div>    
 
-                    <label class="col-lg-1 control-label" for="id">Id</label>
-                    <div class="col-lg-1">
-                        <input class="form-control input-sm" type="text" id="id" ng-model="currentTimePeriod.timePeriodId" disabled="disabled"/>
-                    </div>      
-                </div>  
-
-                <div class="form-group row">
-                    <label class="col-lg-1 control-label" for="starttime">Von</label>
-                    <div class="col-lg-3">
-                        <div class="dropdown">
-                            <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="">    
-                                <div class="input-group">
-                                    <input type="text" class="form-control" data-ng-model="currentTimePeriod.startTime">
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                                </div>    
-                            </a>
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                <datetimepicker data-ng-model="currentTimePeriod.startTime"
-                                                data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }">
-                                </datetimepicker>
-                            </ul>
+                    <div class="form-group">	  
+                        <div class="col-lg-offset-8">
+                            <button id="cancel" ng-click="cancelPeriod()" class="btn">Abbrechen</button>
+                            <button id="save" ng-click="savePeriod" class="btn">Sichern</button>
                         </div>
                     </div>
+                </fieldset>
+            </div>
 
-                    <label class="col-lg-1 control-label" for="endtime">Bis</label>
-                    <div class="col-lg-3">
-                        <div class="dropdown">
-                            <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="">    
-                                <div class="input-group">
-                                    <input type="text" class="form-control" data-ng-model="currentTimePeriod.endTime">
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                                </div>    
-                            </a>
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                <datetimepicker data-ng-model="currentTimePeriod.endTime"
-                                                data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }">
-                                </datetimepicker>
-                            </ul>
-                        </div>
-                    </div>    
-                </div>
-
-                <div class="form-group">	  
-                    <div class="col-lg-offset-8">
-                        <button id="cancel" ng-click="cancelPeriod()" class="btn">Abbrechen</button>
-                        <button id="save" ng-click="save(1)" class="btn">Sichern</button>
-                    </div>
-                </div>
-            </fieldset>
             <div class="clearfix"></div>
         </form>
     </div>
@@ -206,7 +217,7 @@
                         <td>ToDo</td>
                         <td style="text-align: right;">
                             <button id="save" ng-click="editPeriod(period)" class="btn">Bearbeiten</button>
-                            <button id="remove" ng-click="removePeriod($index, period.id)" class="btn">Löschen</button>
+                            <button id="remove" ng-click="removePeriod(period)" class="btn">Löschen</button>
                         </td>
                     </tr>
                 </tbody>
