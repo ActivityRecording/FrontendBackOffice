@@ -38,6 +38,7 @@
                         <th>Tarmed-ID</th>
                         <th>Beschreibung</th>
                         <th>Leistungserbringer</th>
+                        <th>Anzahl</th>
                         <th>Dauer</th>
                     </tr>
                 </thead>
@@ -45,7 +46,8 @@
                     <tr ng-repeat="activity in activities">
                         <td>{{activity.tarmedActivityId}}</td>
                         <td>{{activity.description}}</td>
-                        <td>{{activity.employeeId}}</td>
+                        <td>{{activity.employeeId}} {{activity.supplierLastname}} {{activity.supplierFirstname}}</td>
+                        <td>{{activity.number}}</td>
                         <td>{{activity.duration}}</td>
                     </tr>
                 </tbody>
@@ -70,7 +72,7 @@
                         <td>{{period.employeeId}}</td>
                         <td>{{period.startTime}}</td>
                         <td>{{period.endTime}}</td>
-                        <td>ToDo</td>
+                        <td>{{getDuration(period.startTime, period.endTime)}}</td>
                     </tr>
                 </tbody>
             </table>

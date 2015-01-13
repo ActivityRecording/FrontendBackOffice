@@ -38,7 +38,7 @@
                 <div class="form-group" ng-if="createActivity">
                     <label class="col-lg-1 control-label" for="tarmedFilter">Tarmed-Filter</label>
                     <div class="col-lg-3">
-                        <input class="form-control input-sm" type="text" id="tarmedFilter" ng-model="searchText"/>
+                        <input class="form-control input-sm" type="text" ng-model="filterText" id="tarmedFilter"/>
                     </div>
                     <label class="col-lg-1 control-label" for="treatmentNumber">Id</label>
                     <div class="col-lg-1">
@@ -53,7 +53,7 @@
                                 ng-model="currentActivity._tarmedActivity" 
                                 ng-init="currentActivity._tarmedActivity = {id: currentActivity.tarmedActivityId}" 
                                 ng-change="currentActivity.tarmedActivityId = currentActivity._tarmedActivity.id"
-                                ng-options="(item.id + ' ' + item.description) for item in tarmed.catalogue track by item.id" required>
+                                ng-options="(item.id + ' ' + item.description) for item in tarmed.catalogue | filter:search track by item.id" required>
                             <option value="">-</option>
                         </select>
                     </div>
@@ -117,8 +117,8 @@
                         <td>{{activity.duration}}</td>
                         <td>{{activity.number}}</td>
                         <td style="text-align: right;">
-                            <button id="save" ng-click="editActivity(activity)" class="btn">Bearbeiten</button>
-                            <button id="remove" ng-click="removeActivity(activity)" class="btn">Löschen</button>
+                            <button id="save" ng-disabled="isGenerated(activity.tarmedActivityId)" ng-click="editActivity(activity)" class="btn">Bearbeiten</button>
+                            <button id="remove" ng-disabled="isGenerated(activity.tarmedActivityId)" ng-click="removeActivity(activity)" class="btn">Löschen</button>
                         </td>
                     </tr>
                 </tbody>
@@ -135,12 +135,15 @@
                         <label class="col-lg-1 control-label" for="supplier">LE-ID</label>
 
                         <div class="col-lg-3" ng-if="createPeriod">
-                            <select class="form-control input-sm" id="supplierDD" ng-model="currentTimePeriod.supplier" 
-                                    ng-options="(supplier.firstname + ' ' + supplier.lastname) for supplier in suppliers">
-                                <option value="">-- Leistungserbringer auswählen --</option>
-                            </select>
+                        <select class="form-control input-sm" id="supplierDD" 
+                                ng-model="currentTimePeriod._employee" 
+                                ng-init="currentTimePeriod._employee = {employeeID: currentTimePeriod.employeeId}"
+                                ng-change="currentTimePeriod.employeeId = currentTimePeriod._employee.employeeID"
+                                ng-options="(supplier.lastname + ' ' + supplier.firstname) for supplier in suppliers track by supplier.employeeID">
+                            <option value="">-</option>
+                        </select>
                         </div>
-                        <div class="col-lg-2" ng-if="!createPeriod">
+                        <div class="col-lg-3" ng-if="!createPeriod">
                             <input class="form-control input-sm" type="text" id="supplierIB" ng-model="supplierName" disabled="disabled"/>
                         </div> 
 
@@ -194,7 +197,7 @@
                     <div class="form-group">	  
                         <div class="col-lg-offset-8">
                             <button id="cancel" ng-click="cancelPeriod()" class="btn">Abbrechen</button>
-                            <button id="save" ng-click="savePeriod" class="btn">Sichern</button>
+                            <button id="save" ng-click="savePeriod()" class="btn">Sichern</button>
                         </div>
                     </div>
                 </fieldset>
@@ -222,7 +225,7 @@
                         <td>{{period.employeeId}}: {{period.supplierLastname}}, {{period.supplierFirstname}}</td>
                         <td>{{period.startTime|date: 'yyyy.MM.dd - HH:mm'}}</td>
                         <td>{{period.endTime|date: 'yyyy.MM.dd - HH:mm'}}</td>
-                        <td>ToDo</td>
+                        <td>{{getDuration(period.startTime, period.endTime)}}</td>
                         <td style="text-align: right;">
                             <button id="save" ng-click="editPeriod(period)" class="btn">Bearbeiten</button>
                             <button id="remove" ng-click="removePeriod(period)" class="btn">Löschen</button>
