@@ -1,33 +1,53 @@
 'use strict';
 
-var directive = angular.module('directives', ['ui.directives']).directive;
+var mod = angular.module('directives',[]);
 
-directive('date', function (dateFilter) {
+mod.directive('ngMin', function () {
     return {
-        require:'ngModel',
-        link:function (scope, elm, attrs, ctrl) {
-
-            var dateFormat = attrs['date'] || 'dd.MM.yyyy';
-            var minDate = Date.parse(attrs['min']) || 0;
-            var maxDate = Date.parse(attrs['max']) || 9007199254740992;
-
-            ctrl.$parsers.unshift(function (viewValue) {
-                var parsedDateMilissec = Date.parse(viewValue);
-                if (parsedDateMilissec > 0) {
-                    if (parsedDateMilissec >= minDate && parsedDateMilissec <= maxDate) {
-                        ctrl.$setValidity('date', true);
-                        return parsedDateMilissec;
-                    }
+        restrict: 'A',
+        require: 'ngModel',
+        link: function (scope, elem, attr, ctrl) {
+            scope.$watch(attr.ngMin, function () {
+                ctrl.$setViewValue(ctrl.$viewValue);
+            });
+            var minValidator = function (value) {
+                var min = scope.$eval(attr.ngMin) || 0;
+                if (!isEmpty(value) && value < min) {
+                    ctrl.$setValidity('ngMin', false);
+                    return undefined;
+                } else {
+                    ctrl.$setValidity('ngMin', true);
+                    return value;
                 }
+            };
 
-                // in all other cases it is invalid, return undefined (no model update)
-                ctrl.$setValidity('date', false);
-                return undefined;
-            });
+            ctrl.$parsers.push(minValidator);
+            ctrl.$formatters.push(minValidator);
+        }
+    };
+});
 
-            ctrl.$formatters.unshift(function (modelValue) {
-                return new Date(modelValue);
+mod.directive('ngMax', function () {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function (scope, elem, attr, ctrl) {
+            scope.$watch(attr.ngMax, function () {
+                ctrl.$setViewValue(ctrl.$viewValue);
             });
+            var maxValidator = function (value) {
+                var max = scope.$eval(attr.ngMax) || Infinity;
+                if (!isEmpty(value) && value > max) {
+                    ctrl.$setValidity('ngMax', false);
+                    return undefined;
+                } else {
+                    ctrl.$setValidity('ngMax', true);
+                    return value;
+                }
+            };
+
+            ctrl.$parsers.push(maxValidator);
+            ctrl.$formatters.push(maxValidator);
         }
     };
 });

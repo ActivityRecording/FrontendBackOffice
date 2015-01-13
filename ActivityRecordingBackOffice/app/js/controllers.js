@@ -51,11 +51,34 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
     $scope.fid = $routeParams.fid;
     $scope.tarmed = TarmedCatalogueService;
     $scope.currentActivity = new Activity();
-    $scope.activities = new Approval.query({fid: $scope.fid});
-    $scope.caseTime = new CaseTime.get({fid: $scope.fid});
+    $scope.activities = Approval.query(
+        {fid: $scope.fid},
+        function () {
+            $scope.caseTime = CaseTime.get(
+                {fid: $scope.fid},
+                function (caseTime) {
+                    // do nothing
+                },
+                function (err) {
+                    alert("Im Service CaseTime.get ist ein Fehler aufgetreten: " + err);
+                }
+            )
+        },
+        function (err) {
+            alert("Im Service Approval.get ist ein Fehler aufgetreten: " + err);
+        }
+    );
+    $scope.caseTime = CaseTime.get(
+        {fid: $scope.fid},
+        function (caseTime) {
+            // do nothing
+        },
+        function (err) {
+            alert("Im Service CaseTime.get ist ein Fehler aufgetreten: " + err);
+        }
+    )
     $scope.currentTimePeriod = new TimePeriod();
     $scope.periods = TimePeriod.query({fid: $scope.fid});
-    $scope.currentSupplier = new Supplier();
     $scope.patient = Patient.get({fid: $scope.fid});
     $scope.suppliers = Supplier.query();
     
@@ -66,61 +89,62 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
     $scope.duration = '';
     
 
-    //Activity Funktionen
+    //Speichern einer bearbeiteten oder neuen Leistung
     $scope.saveActivity = function () {
         if (!$scope.activitiesForm.$invalid) {
             var container = new Activity();
-            container.employeeId = $scope.currentActivity.supplier.employeeID;
+            container.employeeId = $scope.currentActivity.employeeId;
             container.treatmentNumber = $scope.fid;
-            container.tarmedActivityId = $scope.currentActivity.tarmedActivityId.id;
+            container.tarmedActivityId = $scope.currentActivity.tarmedActivityId;
             container.number = $scope.currentActivity.number;
-            $scope.empNr = $scope.currentActivity.number;
 
-            //Zuweisung überprüfen
-            var isNew = $scope.currentActivity.activityId == null;
-
-            if (isNew) {
-                container.$save({},
+            if ($scope.createActivity) {
+                // Für eine neue Leistung Anzahl übernehmen
+                container.number = $scope.currentActivity.number;
+            } else {
+                // Beim Ändern einer Leistung nur Differenz der Anzahl setzen
+                container.number = $scope.currentActivity.number - $scope.currentActivity._oldnumber;
+            }
+            container.$save(
+                {},
+                function () {
+                    $scope.cancelActivity();
+                    $scope.activitiesForm.$setPristine();
+                    $scope.activities = Approval.query(
+                        {fid: $scope.fid},
                         function () {
-                            $scope.activities = Approval.query({fid: $scope.fid},
-                            function () {
-                                $scope.caseTime = CaseTime.get({fid: $scope.fid},
+                            $scope.caseTime = CaseTime.get(
+                                {fid: $scope.fid},
                                 function (caseTime) {
                                     // do nothing
                                 },
-                                        function (err) {
-                                            alert("Error in CaseTime.get" + err)
-                                        }
-                                )
-                            },
-                                    function (err) {
-                                        alert("Error in Approval.get" + err)
-                                    }
-                            );
+                                function (err) {
+                                    alert("Im Service CaseTime.get ist ein Fehler aufgetreten: " + err);
+                                }
+                            )
                         },
                         function (err) {
-                            alert("Error in Activity.save" + err)
+                            alert("Im Service Approval.get ist ein Fehler aufgetreten: " + err);
                         }
-                );
-            } else {
-                container.$update(
-                        {},
-                        function () {
-                            $scope.activities = Approval.query({fid: $scope.fid});
-                        },
-                        function (err) {
-                            alert("Error in Approval.query" + err)
-                        }
-                );
-            }
-            $scope.cancelPeriod();
-            $scope.activitiesForm.$setPristine();
+                    );
+                },
+                function (err) {
+                    alert("Im Service Activity.save ist ein Fehler aufgetreten: " + err);
+                }
+            );
         }
     };
 
     $scope.editActivity = function (activity) {
         $scope.createActivity = false;
-        $scope.currentActivity = activity;
+        // Kopiere die Leistung
+        $scope.currentActivity = new Activity();
+        $scope.currentActivity.employeeId = activity.employeeId;
+        $scope.currentActivity.treatmentNumber = activity.treatmentNumber;
+        $scope.currentActivity.tarmedActivityId = activity.tarmedActivityId;
+        $scope.currentActivity.number = activity.number;
+        // Alte Anzahl sichern für die Berechnung der Differenz
+        $scope.currentActivity._oldnumber = activity.number;
         $scope.supplierName = activity.supplierFirstname + ' ' + activity.supplierLastname;
         $scope.tarmedDescription = activity.tarmedActivityId + ' ' + activity.description;
     };
@@ -134,15 +158,35 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
         container.treatmentNumber = item.treatmentNumber;
         container.tarmedActivityId = item.tarmedActivityId;
         container.number = item.number * -1;
-        container.$save().then(function () {
-            $scope.activities.splice(index, 1);
-            $scope.times = CaseTime.get({fid: $scope.fid});
-        });
+        container.$save(
+                {},
+                function (){
+                    $scope.activities.splice(index, 1);
+                    $scope.times = CaseTime.get({fid: $scope.fid});
+                    $scope.currentActivity = new Activity();
+                    $scope.createActivity = true;
+                    $scope.caseTime = CaseTime.get(
+                        {fid: $scope.fid},
+                        function (caseTime) {
+                            // do nothing
+                        },
+                        function (err) {
+                            alert("Im Service CaseTime.get ist ein Fehler aufgetreten: " + err);
+                        }
+                    )
+                },
+                function (err){
+                    alert("Im Service Activity.remove ist ein Fehler aufgetreten: " + err);
+                }
+        );
     };
 
     $scope.cancelActivity = function () {
         $scope.currentActivity = new Activity();
+        $scope.supplierName = '';
+        $scope.tarmedDescription = '';
         $scope.createActivity = true;
+        $scope.activitiesForm.$setPristine();
     };
 
 

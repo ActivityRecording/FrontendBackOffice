@@ -1,6 +1,6 @@
-<h2>{{fid}} - {{patient.lastName}}, {{patient.firstName}}  {{patient.dateOfBirth|date:'dd.MM.yyyy'}} - Gemessene Zeit: {{caseTime.measuredHours}}:{{caseTime.measuredMinutes}} Verrechnete Zeit: {{caseTime.allocatedHours}}:{{caseTime.allocatedMinutes}}</h2>
+<h2>{{fid}} - {{patient.lastName}}, {{patient.firstName}}  {{patient.dateOfBirth|date:'dd.MM.yyyy'}} - Gemessene Zeit: {{caseTime.measuredHours}}:{{caseTime.measuredMinutes | numberFixedLen: 2}}:{{caseTime.measuredSeconds | numberFixedLen: 2}} Verrechnete Zeit: {{caseTime.allocatedHours}}:{{caseTime.allocatedMinutes | numberFixedLen: 2}}:{{caseTime.allocatedSeconds | numberFixedLen: 2}}</h2>
 <br>
-<div ng-controller="ActivitiesCtrl">
+<div>
 
 
     <div class="container">
@@ -49,8 +49,12 @@
                 <div class="form-group">
                     <label class="col-lg-1 control-label" for="tarmedid">Tarmed</label>
                     <div class="col-lg-3" ng-if="createActivity">
-                        <select class="form-control input-sm" id="tarmedidDD" ng-model="currentActivity.tarmedActivityId" ng-options="(item.id + ' ' + item.description) for item in tarmed.catalogue | filter:searchText" required>
-                            <option value="">-- Tarmed Suche--</option>
+                        <select class="form-control input-sm" id="tarmedidDD" 
+                                ng-model="currentActivity._tarmedActivity" 
+                                ng-init="currentActivity._tarmedActivity = {id: currentActivity.tarmedActivityId}" 
+                                ng-change="currentActivity.tarmedActivityId = currentActivity._tarmedActivity.id"
+                                ng-options="(item.id + ' ' + item.description) for item in tarmed.catalogue track by item.id" required>
+                            <option value="">-</option>
                         </select>
                     </div>
                     <div class="col-lg-3" ng-if="!createActivity">
@@ -59,8 +63,12 @@
 
                     <label class="col-lg-1 control-label" for="supplier">Leistungserbringer</label>
                     <div class="col-lg-2" ng-if="createActivity">
-                        <select class="form-control input-sm" id="supplier" ng-model="currentActivity.supplier" ng-options="(supplier.lastname + ' ' + supplier.firstname) for supplier in suppliers ">
-                            <option value="">-- Leistungserbringer auswählen --</option>
+                        <select class="form-control input-sm" id="supplier" 
+                                ng-model="currentActivity._employee" 
+                                ng-init="currentActivity._employee = {employeeID: currentActivity.employeeId}"
+                                ng-change="currentActivity.employeeId = currentActivity._employee.employeeID"
+                                ng-options="(supplier.lastname + ' ' + supplier.firstname) for supplier in suppliers track by supplier.employeeID">
+                            <option value="">-</option>
                         </select>
                     </div>
                     <div class="col-lg-2" ng-if="!createActivity">
@@ -69,7 +77,7 @@
 
                     <label class="col-lg-1 control-label" for="amount">Anzahl</label>
                     <div class="col-lg-1">
-                        <input class="form-control input-s" type="number" id="amount" ng-model="currentActivity.number" required/>
+                        <input class="form-control input-s" type="number" min="0" id="amount" ng-model="currentActivity.number" required/>
                     </div>
                 </div>
 
@@ -77,7 +85,7 @@
                     <label>&nbsp;</label>
                     <div class="col-lg-offset-8">
                         <button id="cancel" ng-click="cancelActivity()" class="btn">Abbrechen</button>
-                        <button id="save" ng-click="saveActivity" class="btn">Sichern</button>	
+                        <button id="save" ng-click="saveActivity()" class="btn">Sichern</button>	
                     </div>   
                 </div>   	    
             </fieldset>
