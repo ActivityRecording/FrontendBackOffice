@@ -186,6 +186,7 @@ function ActivitiesCtrl($scope, $routeParams, $location, Approval, Activity, Cas
         $scope.supplierName = '';
         $scope.tarmedDescription = '';
         $scope.createActivity = true;
+        $scope.filterText = '';
         $scope.activitiesForm.$setPristine();
     };
     

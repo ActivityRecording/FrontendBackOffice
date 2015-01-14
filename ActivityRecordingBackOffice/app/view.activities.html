@@ -35,10 +35,10 @@
     <div class="well" >
         <form class="form-horizontal" role="form" id="form" name="activitiesForm">
             <fieldset>
-                <div class="form-group" ng-if="createActivity">
+                <div class="form-group">
                     <label class="col-lg-1 control-label" for="tarmedFilter">Tarmed-Filter</label>
                     <div class="col-lg-3">
-                        <input class="form-control input-sm" type="text" ng-model="filterText" id="tarmedFilter"/>
+                        <input class="form-control input-sm" type="text" ng-disabled="!createActivity" ng-model="filterText" id="tarmedFilter"/>
                     </div>
                     <label class="col-lg-1 control-label" for="treatmentNumber">Id</label>
                     <div class="col-lg-1">
@@ -59,8 +59,8 @@
                     </div>
                     <div class="col-lg-3" ng-if="!createActivity">
                         <input class="form-control input-sm" type="text" id="tarmedidIB" ng-model="tarmedDescription" disabled="disabled"/>
-                    </div>     
-
+                    </div> 
+                    
                     <label class="col-lg-1 control-label" for="supplier">Leistungserbringer</label>
                     <div class="col-lg-2" ng-if="createActivity">
                         <select class="form-control input-sm" id="supplier" 
