@@ -1,4 +1,4 @@
-<h2>{{fid}} - {{patient.lastName}}, {{patient.firstName}}  {{patient.dateOfBirth|date:'dd.MM.yyyy'}} - Gemessene Zeit: {{caseTime.measuredHours}}:{{caseTime.measuredMinutes}} Verrechnete Zeit: {{caseTime.allocatedHours}}:{{caseTime.allocatedMinutes}}</h2>
+<h2>{{fid}} - {{patient.lastName}}, {{patient.firstName}}  {{patient.dateOfBirth|date:'dd.MM.yyyy'}} - Gemessene Zeit: {{caseTime.measuredHours}}:{{caseTime.measuredMinutes | numberFixedLen: 2}}:{{caseTime.measuredSeconds | numberFixedLen: 2}} Verrechnete Zeit: {{caseTime.allocatedHours}}:{{caseTime.allocatedMinutes | numberFixedLen: 2}}:{{caseTime.allocatedSeconds | numberFixedLen: 2}}</h2>
 <br>
 <div>
 
